@@ -1,0 +1,14 @@
+sudo a2enmod rewrite
+sudo service apache2 restart
+
+
+/etc/apache2/sites-enabled/000-default.conf
+
+Add this content inside of the existing <VirtualHost>
+<Directory /var/www/html>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride All
+                Order allow,deny
+                allow from all
+</Directory>
+

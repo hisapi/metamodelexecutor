@@ -1,0 +1,36 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+ 
+  # skip existent files
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule index.php - [QSA,L,C]
+  RewriteRule .* - [QSA,L]
+ 
+  # deny access php files
+  RewriteCond %{REQUEST_URI} ^.*\.php$
+  RewriteRule ^.*\.php$ - [R=404,L]
+ 
+  # asset
+  RewriteCond %{REQUEST_URI} ^asset/*$
+  RewriteRule ^asset/*$ - [QSA,L]
+ 
+  # redirect root access (/) to index.php
+  RewriteCond %{REQUEST_URI} ^/$
+  RewriteRule ^$ index.php [QSA,L]
+ 
+  # redirect 404 for non existent files
+  RewriteCond %{REQUEST_URI} ^(.*)\..*$
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*)\..*$ - [R=404,L]
+  
+  # no, so we redirect to our front web controller
+  #RewriteCond %{REQUEST_FILENAME} !-f
+  #RewriteRule ^(.*)$ index.php [QSA,L]
+ 
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond $0#%{REQUEST_URI} ([^#]*)#(.*)\1$
+  RewriteRule ^.*$ %2index.php [QSA,L]
+
+</IfModule>
